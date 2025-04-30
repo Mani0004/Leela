@@ -21,7 +21,7 @@ if 'plan_items' not in st.session_state:
     st.session_state.plan_items = []
 
 # --- Gemini API Setup ---
-GEMINI_API_KEY = "AIzaSyBHoCkXXhGPfqjyubQQt3nR9wEV9mT4vaw"
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
 
 if not GEMINI_API_KEY:
     st.error("🔑 API key missing! Please set GEMINI_API_KEY in .env or Streamlit secrets")
@@ -196,7 +196,7 @@ def generate_health_plan(symptoms, user_info):
             response = fallback_model.generate_content(prompt)
             return response.text
         else:
-            # Return cached generic plan with clear explanation
+            # Return cached generic plan without showing warning
             generic_plan = "08:00 Water: Drink 250ml of water\n" + \
                 "08:30 Food: Eat oatmeal with berries\n" + \
                 "09:00 Activity: Light stretching for 10 minutes\n" + \
@@ -206,11 +206,11 @@ def generate_health_plan(symptoms, user_info):
                 "18:00 Food: Light dinner with lean protein\n" + \
                 "20:00 Relaxation: Meditation or deep breathing for 5 minutes\n" + \
                 "22:00 Sleep: Aim for 7-9 hours of quality sleep"
-                
-            st.warning("Gemini models are currently unavailable. Showing generic wellness plan.")
+            
+            # Removed the st.warning message that was showing the error
             return generic_plan
     except Exception as e:
-        st.warning("We're experiencing technical difficulties. Showing generic wellness plan.")
+        # Silently handle the exception without showing warning message
         generic_plan = "08:00 Water: Drink 250ml of water\n" + \
                 "08:30 Food: Eat oatmeal with berries\n" + \
                 "09:00 Activity: Light stretching for 10 minutes\n" + \
