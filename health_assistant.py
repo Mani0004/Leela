@@ -21,7 +21,7 @@ if 'plan_items' not in st.session_state:
     st.session_state.plan_items = []
 
 # --- Gemini API Setup ---
-GEMINI_API_KEY = os.getenv("GEMINI_API_KEY") or st.secrets.get("GEMINI_API_KEY")
+GEMINI_API_KEY = "AIzaSyBHoCkXXhGPfqjyubQQt3nR9wEV9mT4vaw"
 
 if not GEMINI_API_KEY:
     st.error("🔑 API key missing! Please set GEMINI_API_KEY in .env or Streamlit secrets")
